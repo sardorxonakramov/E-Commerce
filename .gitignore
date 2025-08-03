@@ -1,0 +1,69 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django migrations
+**/migrations/
+!**/migrations/__init__.py
+
+# Environments
+.env
+*.env
+
+# Virtual environment
+venv/
+.venv/
+ENV/
+env/
+Pipfile.lock
+poetry.lock
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# SQLite (agar ishlatilsa)
+*.sqlite3
+
+# Logs
+*.log
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Static and media (agar version controlga qo‘shilmasa)
+staticfiles/
+media/
+
+# Node (agar frontend kiritilsa)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Test result files
+test-results/
+*.out
+*.err
+
+# MyPy, Pylint, etc.
+.mypy_cache/
+.pytest_cache/
+.pyre/
+ruff_cache/
