@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     "Users",
     "Common",
     "products",
-    'Cart',
+    "Cart",
+    "order",
     # outer apps
     "django_filters",
     "django_json_widget",

@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/v1/profile/", include("Users.urls.profile"), name="Profile"),
     path('api/v1/',include('products.v1'), name = 'products'),
     path('api/v1/cart/',include('Cart.urls'), name = 'Cart'),
+    path('api/v1/order/',include('order.urls'),name='order')
 ]
 
 
