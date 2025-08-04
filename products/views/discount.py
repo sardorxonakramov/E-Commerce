@@ -12,6 +12,7 @@ from products.serializers import (
     DiscountCreateSerializer,
     DiscountListSerializer,
     DiscountUpdateSerializer,
+    DiscountDeleteSerializer,
 )
 
 
@@ -20,10 +21,9 @@ class DiscountListAPIView(generics.ListAPIView):
     serializer_class = DiscountListSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = DiscountFilter
-    search_fields = [
-        "product__name",
-    ]
+    search_fields = ["product__name"]
     ordering_fields = ["created_at", "expired_at", "percentage", "price"]
+    permission_classes = [AllowAny]
 
 
 class DiscountCreateAPIView(generics.CreateAPIView):
@@ -31,15 +31,24 @@ class DiscountCreateAPIView(generics.CreateAPIView):
 
     queryset = Discount.objects.all()
     serializer_class = DiscountCreateSerializer
-    permission_classes =[AllowAny]
+    permission_classes = [AllowAny]
     # permission_classes = [RolePermission]
-    # allowed_roles =['admin','employee','seller']
+    # allowed_roles = ["admin", "employee", "seller"]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED
+        )
 
 
 class DiscountRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Discount.objects.select_related("product").all()
     serializer_class = DiscountListSerializer
     lookup_field = "id"
+    permission_classes = [AllowAny]
 
 
 class DiscountUpdateAPIView(generics.UpdateAPIView):
@@ -47,10 +56,37 @@ class DiscountUpdateAPIView(generics.UpdateAPIView):
 
     queryset = Discount.objects.select_related("product").all()
     serializer_class = DiscountUpdateSerializer
-    permission_classes = [RolePermission]
-    allowed_roles =['admin','employee','seller']
-
+    permission_classes = [AllowAny]
+    # permission_classes = [RolePermission]
+    # allowed_roles = ["admin", "employee", "seller"]
     lookup_field = "id"
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def perform_update(self, serializer):
-        serializer.save(updated_by == self.request.user)
+        # updated_by = self.request.user if hasattr(self.request, 'user') else None
+        # serializer.save(updated_by=updated_by)
+        serializer.save()
+
+
+class DiscountDeleteAPIView(generics.DestroyAPIView):
+    """API View for deleting discounts"""
+
+    queryset = Discount.objects.all()
+    serializer_class = DiscountDeleteSerializer
+    permission_classes = [AllowAny]
+    lookup_field = "id"
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response(
+            {"detail": "Chegirma muvaffaqiyatli o‘chirildi."},
+            status=status.HTTP_204_NO_CONTENT,
+        )

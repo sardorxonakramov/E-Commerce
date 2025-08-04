@@ -5,6 +5,7 @@ from products.views import (
     DiscountListAPIView,
     DiscountRetrieveAPIView,
     DiscountUpdateAPIView,
+    DiscountDeleteAPIView,
 )
 
 urlpatterns = [
@@ -12,4 +13,5 @@ urlpatterns = [
     path("create/", DiscountCreateAPIView.as_view(), name="discount-create"),
     path("<int:id>/", DiscountRetrieveAPIView.as_view(), name="discount-retrieve"),
     path("<int:id>/update/", DiscountUpdateAPIView.as_view(), name="discount-update"),
+    path("<int:id>/delete/", DiscountDeleteAPIView.as_view(), name="discount-delete"),
 ]

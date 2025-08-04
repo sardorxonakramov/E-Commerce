@@ -88,3 +88,9 @@ class DiscountUpdateSerializer(BaseDiscountSerializer):
             raise serializers.ValidationError("Cannot update expired discount")
 
         return attrs
+
+
+class DiscountDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ('id')

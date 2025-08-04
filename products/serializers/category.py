@@ -39,3 +39,4 @@ class CategoryUpdateSerializer(serializers.ModelSerializer):
 class CategoryDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = {"id"}
