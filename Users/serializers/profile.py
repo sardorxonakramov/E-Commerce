@@ -29,8 +29,8 @@ class ProfileSerializers(ModelSerializer):
             self.fields["passport_series"].read_only = True
 
 
-from rest_framework import serializers
-from django.contrib.auth import authenticate
+# from rest_framework import serializers
+# from django.contrib.auth import authenticate
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
@@ -54,3 +54,17 @@ class ChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError({"new_password": "Yangi parol eski paroldan farqli bo‘lishi kerak"})
 
         return attrs
+
+
+# from rest_framework import serializers
+# from Users.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id", "phone", "first_name", "last_name", "email",
+            "passport_series", "role", "is_active", "is_staff", "is_superuser"
+        ]
+        read_only_fields = ("id", "is_superuser", "is_staff",)
