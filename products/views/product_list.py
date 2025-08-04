@@ -1,23 +1,17 @@
+from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from rest_framework.generics import ListAPIView
-from rest_framework.permissions import AllowAny
 
-from products.filters import ProductFilter
-from products.models import Product
-from products.serializers import ProductListSerializer,ProductImagesSerializer
+from products.models.product import Product
+from products.serializers.product_list import ProductListSerializer
+from products.filters.product import ProductFilter
+from Common.pagination import PageNumberPagination
 
 
-class ProductListView(ListAPIView):
-    """
-    API view to list all products.
-    """
-
+class ProductListView(generics.ListAPIView):
+    queryset = Product.objects.prefetch_related("images", "discounts").all()
     serializer_class = ProductListSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_class = ProductFilter
-    search_fields = ["name__uz", "description__uz"]
-    permission_classes = [AllowAny]
+    pagination_class = PageNumberPagination
 
-    def get_queryset(self):
-        return Product.objects.all().order_by("?").prefetch_related("images__image")
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = ProductFilter
+    ordering_fields = ['price', 'name']

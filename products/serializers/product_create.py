@@ -1,49 +1,65 @@
-# from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from rest_framework import serializers
-
-from products.models import Product
+from products.models.product import Product
 from products.models.image import ProductImage
+from products.models.upload import Upload
 
 
-class ProductImagesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ["id", "image"]
-        read_only_fields = ["id"]
+class ProductImageCreateSerializer(serializers.Serializer):
+    image_id = serializers.PrimaryKeyRelatedField(queryset=Upload.objects.all())
+    is_main = serializers.BooleanField(default=False)
 
 
-# @extend_schema_serializer(
-#     examples=[
-#         OpenApiExample(
-#             name="Product Create Example",
-#             value={
-#                 "name": {"en": "Phone", "ru": "Телефон", "uz": "Telefon"},
-#                 "description": {"en": "Smartphone", "ru": "Смартфон", "uz": "Smartfon"},
-#                 "category": 1,
-#                 "price": 199.99,
-#                 "is_top": True,
-#                 "stock": 20,
-#                 "images": [{"image": 1}],
-#                 "banners": [{"image": 1}],
-#             },
-#         )
-#     ]
-# )
 class ProductCreateSerializer(serializers.ModelSerializer):
-    name = serializers.JSONField(default=dict)
-    description = serializers.JSONField(default=dict)
-    # banners = BannerCreateSerializer(many=True, required=False)
-    images = ProductImagesSerializer(many=True, required=False)
+    images = ProductImageCreateSerializer(many=True, write_only=True)
 
     class Meta:
         model = Product
-        fields = [
-            "id",
-            "name",
-            "category",
-            "description",
-            "price",
-            "is_top",
-            "stock",
-            "images",
-        ]
+        fields = ["category", "name", "description", "price", "is_top", "stock", "images"]
+
+    def create(self, validated_data):
+        images_data = validated_data.pop("images", [])
+        product = Product.objects.create(**validated_data)
+
+        main_image_set = False
+        for image_data in images_data:
+            is_main = image_data.get("is_main", False)
+            if is_main and not main_image_set:
+                main_image_set = True
+            elif is_main and main_image_set:
+                is_main = False  # faqat bittasiga ruxsat
+
+            ProductImage.objects.create(
+                product=product,
+                image=image_data["image_id"],
+                is_main=is_main
+            )
+
+        return product
+
+
+# {
+#   "category": 2,
+#   "name": {
+#     "uz": "Tashqi kiyim",
+#     "ru": "Верхняя одежда",
+#     "en": "Outerwear"
+#   },
+#   "description": {
+#     "uz": "Yuqori sifatli matodan",
+#     "ru": "Из высококачественной ткани",
+#     "en": "Made of high-quality fabric"
+#   },
+#   "price": "450000.00",
+#   "is_top": false,
+#   "stock": 25,
+#   "images": [
+#     {
+#       "image_id": 7,
+#       "is_main": true
+#     },
+#     {
+#       "image_id": 8,
+#       "is_main": false
+#     }
+#   ]
+# }
