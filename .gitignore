@@ -67,3 +67,8 @@ test-results/
 .pytest_cache/
 .pyre/
 ruff_cache/
+
+# qoralama uchun
+datauchun.txt
+.datauchun.txt
+*datauchun.txt
