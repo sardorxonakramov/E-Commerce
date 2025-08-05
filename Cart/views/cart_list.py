@@ -12,5 +12,7 @@ class CartDetailAPIView(APIView):
     def get(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
         items = CartItem.objects.filter(cart=cart).select_related("product")
-        serializer = CartItemListSerializer(items, many=True)
+        serializer = CartItemListSerializer(items, many=True, context={"request": request})
+        # serializer = CartItemListSerializer(items, many=True)
+
         return Response(serializer.data)

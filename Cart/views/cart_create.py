@@ -10,6 +10,7 @@ class AddToCartView(APIView):
 
     def post(self, request):
         serializer = CartItemCreateSerializer(data=request.data, context={'request': request})
+        
         if serializer.is_valid():
             cart_item = serializer.save()
             return Response({"message": "Mahsulot savatga qo‘shildi."}, status=status.HTTP_201_CREATED)
@@ -17,6 +18,6 @@ class AddToCartView(APIView):
 
 
 # {
-#   "product_id": 5,
+#   "product_id": 3,
 #   "quantity": 3
 # }
