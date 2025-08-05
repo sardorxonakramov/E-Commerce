@@ -84,3 +84,11 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     def __str__(self):
         return self.phone
+    def get_full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        elif self.first_name:
+            return self.first_name
+        elif self.last_name:
+            return self.last_name
+        return self.phone  # fallback, agar ismlar yo'q bo'lsa
