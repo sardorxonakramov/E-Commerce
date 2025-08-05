@@ -35,7 +35,6 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
 
-        # Eski rasmlarni o‘chirib, yangilarini yozish
         if images_data is not None:
             instance.images.all().delete()
             for image_data in images_data:

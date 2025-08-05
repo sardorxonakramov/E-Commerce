@@ -26,7 +26,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
             if is_main and not main_image_set:
                 main_image_set = True
             elif is_main and main_image_set:
-                is_main = False  # faqat bittasiga ruxsat
+                is_main = False  #
 
             ProductImage.objects.create(
                 product=product,

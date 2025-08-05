@@ -17,4 +17,8 @@ urlpatterns = [
         "discount/",
         include(("products.urls.discount_urls", "discount"), namespace="discount"),
     ),
+    path(
+        "comment/",
+        include(("products.urls.comment_urls", "comment"), namespace="comment"),
+    ),
 ]

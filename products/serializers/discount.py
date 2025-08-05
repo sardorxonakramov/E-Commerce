@@ -5,7 +5,6 @@ from products.models import Discount
 
 
 class DiscountListSerializer(serializers.ModelSerializer):
-    """Serializer for both listing and detail view of discounts"""
 
     product_name = serializers.SerializerMethodField()
     product_price = serializers.DecimalField(source="product.price", max_digits=10, decimal_places=2, read_only=True)
@@ -40,12 +39,10 @@ class DiscountListSerializer(serializers.ModelSerializer):
         return 0
 
     def get_discounted_price(self, obj):
-        # Calculate price after discount
         return float(obj.price) * (1 - obj.percentage / 100)
 
 
 class BaseDiscountSerializer(serializers.ModelSerializer):
-    """Serializer for creating discounts"""
 
     class Meta:
         model = Discount
@@ -71,7 +68,6 @@ class DiscountCreateSerializer(BaseDiscountSerializer):
     def validate(self, attrs):
         product = attrs.get("product")
 
-        # Check for existing active discount
         if Discount.objects.filter(product=product, expired_at__gt=timezone.now()).exists():
             raise serializers.ValidationError("An active discount already exists for this product")
 
@@ -79,7 +75,6 @@ class DiscountCreateSerializer(BaseDiscountSerializer):
 
 
 class DiscountUpdateSerializer(BaseDiscountSerializer):
-    """Serializer for updating discounts"""
 
     def validate(self, attrs):
         instance = self.instance
