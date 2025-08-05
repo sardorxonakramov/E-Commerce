@@ -4,12 +4,12 @@ from rest_framework.exceptions import ValidationError
 
 from Cart.models.cart_item import CartItem
 from Cart.serializers.cart_crud import CartItemUpdateSerializer
-
+from Common.permissions import allow_role
 
 class CartItemUpdateView(UpdateAPIView):
     queryset = CartItem.objects.all()
     serializer_class = CartItemUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, allow_role.IsEmployee]
 
     def get_object(self):
         item = super().get_object()
@@ -30,7 +30,7 @@ class CartItemUpdateView(UpdateAPIView):
 
 class CartItemDeleteView(DestroyAPIView):
     queryset = CartItem.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, allow_role.IsEmployee]
 
     def get_object(self):
         item = super().get_object()

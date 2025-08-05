@@ -1,25 +1,31 @@
 from rest_framework.permissions import BasePermission
+from Common.choices.role import RoleChoice
 
-class RolePermission(BasePermission):
-    """Foydalanuvchi roli asosida ruxsat beradi """
 
+class IsAdmin(BasePermission):
     def has_permission(self, request, view):
-        user = request.user
-        allowed_roles = getattr(view, 'allowed_roles', [])
-
-        return user.is_authenticated and user.role in allowed_roles
+        return request.user.role == RoleChoice.ADMIN
 
 
-"""
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .permissions import RolePermission
+class IsEmployee(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role in [ RoleChoice.EMPLOYEE, RoleChoice.ADMIN]
 
-class SomeProtectedView(APIView):
-    permission_classes = [RolePermission]
-    allowed_roles = ['admin', 'seller']  # faqat admin va seller ko‘ra oladi
 
-    def get(self, request):
-        return Response({"message": "Welcome authorized user!"})
+class IsDeliver(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role in [ RoleChoice.DELIVER, RoleChoice.ADMIN]
 
-"""
+
+class IsSeller(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role in [ RoleChoice.SELLER, RoleChoice.ADMIN]
+
+
+class IsUser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role in [ RoleChoice.USER, RoleChoice.ADMIN]
+
+class IsEmployeeOrDeliver(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role in [RoleChoice.EMPLOYEE, RoleChoice.DELIVER, RoleChoice.ADMIN]

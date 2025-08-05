@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from order.models import Order
 from order.serializers.order import OrderSerializer
+from Common.permissions import allow_role
 
 
 class OrderListAPIView(APIView):

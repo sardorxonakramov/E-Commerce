@@ -6,8 +6,8 @@ from Cart.views.cart_total_price import CartTotalPriceView
 from Cart.views.buy import CreateOrderView
 
 urlpatterns = [
+    path("", CartDetailAPIView.as_view(), name="cart-detail"),
     path("add/", AddToCartView.as_view(), name="add-to-cart"),
-    path("cart/", CartDetailAPIView.as_view(), name="cart-detail"),
 
     path("cart/item/<int:pk>/update/", CartItemUpdateView.as_view(), name="cart-item-update"),
     path("cart/item/<int:pk>/delete/", CartItemDeleteView.as_view(), name="cart-item-delete"),

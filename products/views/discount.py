@@ -3,9 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 
-from Common.permissions.allow_role import RolePermission
 from products.filters import DiscountFilter
 from products.models import Discount
 from products.serializers import (
@@ -14,6 +13,8 @@ from products.serializers import (
     DiscountUpdateSerializer,
     DiscountDeleteSerializer,
 )
+from Common.permissions import allow_role
+
 
 
 class DiscountListAPIView(generics.ListAPIView):
@@ -27,13 +28,13 @@ class DiscountListAPIView(generics.ListAPIView):
 
 
 class DiscountCreateAPIView(generics.CreateAPIView):
-    """API View for creating discounts"""
+
 
     queryset = Discount.objects.all()
     serializer_class = DiscountCreateSerializer
-    permission_classes = [AllowAny]
-    # permission_classes = [RolePermission]
-    # allowed_roles = ["admin", "employee", "seller"]
+    permission_classes = [IsAuthenticated,allow_role.IsSeller]
+
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -52,13 +53,13 @@ class DiscountRetrieveAPIView(generics.RetrieveAPIView):
 
 
 class DiscountUpdateAPIView(generics.UpdateAPIView):
-    """API View for updating discounts (PUT and PATCH)"""
+
 
     queryset = Discount.objects.select_related("product").all()
     serializer_class = DiscountUpdateSerializer
-    permission_classes = [AllowAny]
-    # permission_classes = [RolePermission]
-    # allowed_roles = ["admin", "employee", "seller"]
+    permission_classes = [IsAuthenticated,allow_role.IsSeller]
+
+
     lookup_field = "id"
 
     def update(self, request, *args, **kwargs):
@@ -76,11 +77,11 @@ class DiscountUpdateAPIView(generics.UpdateAPIView):
 
 
 class DiscountDeleteAPIView(generics.DestroyAPIView):
-    """API View for deleting discounts"""
+
 
     queryset = Discount.objects.all()
     serializer_class = DiscountDeleteSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated,allow_role.IsSeller]
     lookup_field = "id"
 
     def destroy(self, request, *args, **kwargs):

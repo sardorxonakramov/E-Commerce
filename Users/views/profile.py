@@ -9,6 +9,8 @@ from Users.serializers.profile import (
     ChangePasswordSerializer,
     UserSerializer,
 )
+from Common.permissions import allow_role
+
 
 User = get_user_model()
 
@@ -52,18 +54,18 @@ from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, DestroyA
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]  # Hozircha
+    permission_classes = [permissions.IsAuthenticated, allow_role.IsAdmin]  # Hozircha
 
 
 class UserDetailView(RetrieveUpdateAPIView):
-    """Admin uchun update"""
+
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserDeleteView(DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated,allow_role.IsAdmin]
