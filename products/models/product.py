@@ -13,12 +13,8 @@ class Product(BaseModel):
         null=True,
         blank=True,
     )
-    name = models.JSONField(
-        default=default_translation
-    )
-    description = models.JSONField(
-        default=default_translation
-    )
+    name = models.CharField(max_length=50)
+    description =models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     is_top = models.BooleanField(default=False)
     stock = models.PositiveIntegerField(default=0)

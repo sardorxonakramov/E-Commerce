@@ -2,11 +2,11 @@ from django.urls import include, path
 
 urlpatterns = [
     path(
-        "category/",
+        "categories/",
         include(("products.urls.category_url", "category"), namespace="category"),
     ),
     path(
-        "product/",
+        "products/",
         include(("products.urls.product_urls", "product"), namespace="product"),
     ),
     path(
