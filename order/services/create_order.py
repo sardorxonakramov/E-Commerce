@@ -1,5 +1,3 @@
-# order/services/create_order.py
-
 from django.db import transaction
 from order.models.order import Order
 from order.models.item import OrderItem
@@ -9,7 +7,7 @@ from Common.generate_number import generate_order_number
 
 
 @transaction.atomic
-def create_order_from_cart(user):
+def create_order_from_cart(user, address: str):
     cart_items = CartItem.objects.filter(cart__user=user).select_related("product")
 
     if not cart_items.exists():
@@ -21,20 +19,18 @@ def create_order_from_cart(user):
         user=user,
         total_price=total_price,
         order_number=generate_order_number(),
+        address=address  # yangi manzil tashqaridan olinadi
     )
 
     for item in cart_items:
         product = item.product
 
-        # Mahsulot yetarli bo'lishini tekshiramiz
         if product.stock < item.quantity:
             raise Exception(f"{product.name} mahsulotdan yetarli emas")
 
-        # Mahsulotdan chegiramiz
         product.stock -= item.quantity
         product.save()
 
-        # OrderItem yaratamiz
         OrderItem.objects.create(
             order=order,
             product=product,
@@ -42,7 +38,6 @@ def create_order_from_cart(user):
             price=product.price
         )
 
-    # Savatni tozalaymiz
     cart_items.delete()
 
     return order
