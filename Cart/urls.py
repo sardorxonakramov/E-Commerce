@@ -9,9 +9,15 @@ urlpatterns = [
     path("", CartDetailAPIView.as_view(), name="cart-detail"),
     path("add/", AddToCartView.as_view(), name="add-to-cart"),
 
-    path("cart/item/<int:pk>/update/", CartItemUpdateView.as_view(), name="cart-item-update"),
-    path("cart/item/<int:pk>/delete/", CartItemDeleteView.as_view(), name="cart-item-delete"),
+    path("<int:pk>/update/", CartItemUpdateView.as_view(), name="cart-item-update"),
+    path("<int:pk>/delete/", CartItemDeleteView.as_view(), name="cart-item-delete"),
     path("total/", CartTotalPriceView.as_view(), name="cart-total-price"),
     path('buy/', CreateOrderView.as_view(), name='cart-buy'),
 ]
 
+#  -------cart add ------
+
+# {
+#   "product_id": 3,
+#   "quantity": 3
+# }

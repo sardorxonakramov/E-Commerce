@@ -17,7 +17,3 @@ class AddToCartView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# {
-#   "product_id": 3,
-#   "quantity": 3
-# }
