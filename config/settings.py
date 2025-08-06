@@ -1,10 +1,12 @@
 from pathlib import Path
 from environs import Env
 
+# Swagger sozlamalari
+from Common.settings.swagger import SPECTACULAR_SETTINGS
+
 env = Env()
 env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
@@ -13,7 +15,6 @@ SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 
 INSTALLED_APPS = [
@@ -35,10 +36,13 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "django_json_widget",
+    'drf_spectacular'
 ]
+
 
 # Django REST_FRAMEWORK
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",  # bu web login uchun
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -99,23 +103,23 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-# postgresql bilan configurtsiya 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str("DB_NAME"),
-        "USER": env.str("DB_USER"),
-        "PASSWORD": env.str("DB_PASSWORD"),
-        "PORT": env.int("DB_PORT"),
-        "HOST": env.str("DB_HOST"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+# postgresql bilan configurtsiya
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": env.str("DB_NAME"),
+#         "USER": env.str("DB_USER"),
+#         "PASSWORD": env.str("DB_PASSWORD"),
+#         "PORT": env.int("DB_PORT"),
+#         "HOST": env.str("DB_HOST"),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
