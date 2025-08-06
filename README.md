@@ -79,7 +79,7 @@ python manage.py runserver
 ## ⚙️ Admin Panel
 
 Admin panelga kirish:  
-[http://localhost:8000/admin](http://localhost:8000/admin)
+[http://localhost:8000/admin/](http://localhost:8000/admin/)
 
 Superuser orqali tizimga kiring va mahsulotlar, foydalanuvchilar, buyurtmalarni boshqaring.
 ## 👀
