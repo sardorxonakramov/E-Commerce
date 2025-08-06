@@ -37,29 +37,4 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         return product
 
 
-# {
-#   "category": 2,
-#   "name": {
-#     "uz": "Tashqi kiyim",
-#     "ru": "Верхняя одежда",
-#     "en": "Outerwear"
-#   },
-#   "description": {
-#     "uz": "Yuqori sifatli matodan",
-#     "ru": "Из высококачественной ткани",
-#     "en": "Made of high-quality fabric"
-#   },
-#   "price": "450000.00",
-#   "is_top": false,
-#   "stock": 25,
-#   "images": [
-#     {
-#       "image_id": 7,
-#       "is_main": true
-#     },
-#     {
-#       "image_id": 8,
-#       "is_main": false
-#     }
-#   ]
-# }
+

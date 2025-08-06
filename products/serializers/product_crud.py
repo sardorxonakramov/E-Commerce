@@ -46,24 +46,3 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
 
         return instance
 
-
-
-# {
-#   "name": {
-#     "uz": "Yangilangan nom",
-#     "ru": "Новое имя",
-#     "en": "Updated Name"
-#   },
-#   "description": {
-#     "uz": "Tavsif",
-#     "ru": "Описание",
-#     "en": "Description"
-#   },
-#   "price": "199000.00",
-#   "stock": 7,
-#   "is_top": true,
-#   "images": [
-#     {"upload_id": 12, "is_main": true},
-#     {"upload_id": 14, "is_main": false}
-#   ]
-# }
