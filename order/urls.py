@@ -14,4 +14,11 @@ urlpatterns = [
 
 ]
 
-
+# ---------------- buy ni o'z ichiga oladi ------------
+# {
+#     "address":"Toshkent"
+# }
+# buyurtma holatini o'zgartirishda shuni kirtsa bas
+# {
+# "status":2
+# }
