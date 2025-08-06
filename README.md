@@ -70,7 +70,7 @@ python manage.py runserver
 `drf-spectacular` yordamida yaratilgan:
 
 - Swagger: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)
-- Redoc: [http://localhost:8000/api/redoc/](http://localhost:8000/api/schema/redoc/)
+- Redoc: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)
 - Schema: [http://localhost:8000/api/schema/](http://localhost:8000/api/schema/)
 
 ---
